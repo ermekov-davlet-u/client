@@ -1,0 +1,53 @@
+
+
+.selects{
+    padding: 24px;
+    max-width: calc( 80% - 48px );
+    min-width: 980px;
+}
+.container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 18px 16px;
+}
+.selects_title{
+    text-align: start;
+    line-height: 36px;
+    font-size: 18px;
+    color: rgb(35, 58, 73);
+    border-bottom: 1px solid rgb(13, 49, 73);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+.selects_line{
+    border-radius: 1px;
+    height: 1px;
+}
+.stud_mark{
+    display: grid;
+    grid-template-columns: 360px 480fr ;
+    max-width: 980px;
+}
+.selects_title_notitle{
+    border: none;
+    margin: 0;
+}
+.add_btn{
+    padding: 2px 28px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    letter-spacing: 2px;
+    margin-left: 12px;
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+    &:hover{
+        color: #333;
+        background: #fff;
+    }
+}
+.grade_btns{
+    display: flex;
+    height: 38px;
+    width: 480px;
+}

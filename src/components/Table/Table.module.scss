@@ -1,0 +1,74 @@
+
+.main_wrap{
+    max-width: calc(100% - 48px);
+    width: 1840px;
+    padding: 0 24px;
+    min-width: 980px;
+}
+.container{
+    width: 100%;
+    min-width: 1300px;
+}
+.table_row{
+    display: grid;
+    grid-template-columns: 48px 140px 80px 6fr 6fr 4fr 3fr 4fr;
+    grid-auto-rows: minmax(28px, 38px);
+    margin-bottom: 4px;
+    box-shadow: 0 0 3px rgb(161, 161, 161);
+    margin-bottom: 4px;
+    &:hover{
+        background-color: rgb(252, 252, 181);
+        // cursor: pointer;
+    }
+}
+.table_headers{
+    font-weight: 700;
+    background-color: #99b19c !important  ;
+    color: white;
+    margin: 0;
+}
+.table_item{
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.date_picker{
+    width: 160px;
+    padding: 4px;
+}
+.react-datepicker__input-container{
+    width: 100%;
+    padding: 14px !important;
+}
+.main_log_pass_wrap{
+    width: 1240px;
+    margin: 0 auto;
+}
+.table_logpas_headers{
+    grid-template-columns: 48px 2fr 6fr 3fr 4fr 1fr;
+}
+.stud_logpass{
+    grid-template-columns: 48px 2fr 6fr 3fr 4fr 1fr;
+}
+.table_row_gradestud{
+    grid-template-columns: 48px 2fr 6fr 2fr 2fr 1fr 2fr 2fr 3fr 1fr;
+    @media screen and (max-width: 1440px) {
+        grid-template-columns: 48px 140px 320px 100px 96px 82px 120px 120px 172px 96px;
+    }
+}
+
+.del_btn{
+    font-weight: 600;
+    &:hover{
+        color: rgb(165, 32, 32);
+        cursor: pointer;
+        background-color: #ffffff;
+        transform: scale(1.1)
+    }
+}
+.ball_inp{
+    width: 48px;
+    border: none;
+    outline: none;
+}

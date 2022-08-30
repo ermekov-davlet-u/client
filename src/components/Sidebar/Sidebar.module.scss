@@ -1,0 +1,15 @@
+.menu{
+    width: 1840px;
+    margin: 0 auto;
+    max-width: calc(100% - 48px);
+}
+.container{
+    display: flex;
+
+}
+.menu_item{
+    padding: 8px 12px;
+    color: #888;
+    font-weight: 700;
+    text-decoration: none;
+}
