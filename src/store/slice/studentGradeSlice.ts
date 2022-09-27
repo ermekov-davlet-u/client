@@ -6,13 +6,17 @@ import { IEstCinfig, IMarks } from "../models/directory";
 interface IStydentGrade{
     estConfig: IEstCinfig[]
     marks: IMarks[]
-    canChangeDopusk: boolean
+    canChangeDopusk: boolean;
+    canaccessfest: number
+    photo: string;
 }
 
 const initialState: IStydentGrade = {
     estConfig: [],
     marks: [],
-    canChangeDopusk: false
+    canChangeDopusk: false,
+    canaccessfest: 1,
+    photo: "",
 } 
 
 const studentGradeSlice =  createSlice({
@@ -27,10 +31,16 @@ const studentGradeSlice =  createSlice({
         },
         newCanChangeDopusk(state: IStydentGrade, action: PayloadAction<boolean>){
             state.canChangeDopusk = action.payload
+        },
+        newCanaccessfest: (state: IStydentGrade, action: PayloadAction<number>) => {
+            state.canaccessfest = action.payload
+        },
+        newStudPhoto: (state: IStydentGrade, action: PayloadAction<string>) => {
+            state.photo = action.payload
         }
     }
 })
 
-export const { newEstConfig, newMarks, newCanChangeDopusk } = studentGradeSlice.actions
+export const { newEstConfig, newMarks, newCanChangeDopusk, newCanaccessfest, newStudPhoto } = studentGradeSlice.actions
 
 export default studentGradeSlice.reducer

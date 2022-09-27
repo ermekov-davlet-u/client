@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import classes from "./Table.module.scss"
 import classNames from 'classnames';
 import { useAppSelector } from '../../store/hook';
-import { IStundentLogPass, IUniversalSelectType } from '../../store/models/directory';
+import { IStundentLogPass } from '../../store/models/directory';
 import { FiEdit } from "react-icons/fi"
-
 import "react-datepicker/dist/react-datepicker.css";
 import ModalLoginStud, { IFormStud } from './../Modal/ModalLoginStud';
 import { queryServer } from '../../hooks/fetch';
@@ -36,33 +35,33 @@ function TableElemLogPass( {
             <ModalLoginStud name={stud.s_fio} login={stud.login} show={modal} actionFunc={delMark} close={()=>{
                 setModal(false)
             }}/>
-             <div className={classNames(classes.table_row, classes.stud_logpass)}>
-                <div className={classes.table_item}>
+             <div className={classNames(classes.table_row)}>
+                <div className={classNames(classes.table_item, classes.table_item_num)}>
+                    {
+                        ++num
+                    }
+                </div>
+                <div className={classNames(classes.table_item, classes.table_item_num)}>
                     {
                         num
                     }
                 </div>
-                <div className={classes.table_item}>
-                    {
-                        num
-                    }
-                </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_pay)}>
                     {
                         stud.idid
                     }
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_logname)}>
                     {
                         stud.s_fio
                     }
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_pay)}>
                     {
                         stud.login
                     }
                 </div>
-                <div className={classNames(classes.del_btn, classes.table_item)} onClick={() => {
+                <div className={classNames(classes.table_item, classes.table_item_pay, classes.table_item_btn)} onClick={() => {
                     setModal(true)
                 }}>
                     {

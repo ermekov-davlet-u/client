@@ -9,7 +9,11 @@ import studentMarksReducer from "./slice/studentMark"
 import { studentLogPassApi } from './api/directory';
 import educShReducer from "./slice/educShSlice"
 import selMarkMagReducer from "./slice/selMerkMagSlice"
-
+import loadingReduser from "./slice/loadingSlice"
+import kvalificationReducer from "./slice/kvalification"
+import diplomReducer from "./slice/diplomSlice"
+import journalReducer from "./slice/journalSlice"
+import dostupReducer from "./slice/dostupSlice"
 
 export const store = configureStore({
   reducer: {
@@ -20,12 +24,17 @@ export const store = configureStore({
     studentMarks: studentMarksReducer,
     educSh: educShReducer,
     selMarkMag: selMarkMagReducer,
+    loading: loadingReduser,
+    kvalification: kvalificationReducer,
+    diplom: diplomReducer,
+    journal: journalReducer,
+    dostup: dostupReducer,
     [studentLogPassApi.reducerPath]: studentLogPassApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(studentLogPassApi.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }).concat(studentLogPassApi.middleware)
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch

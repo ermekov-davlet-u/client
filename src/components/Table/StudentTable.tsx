@@ -11,13 +11,13 @@ function StudentTable() {
     return ( 
         <section className={classNames(classes.main_wrap, classes.main_log_pass_wrap)}>
             <div className={classes.container}>
-                <div className={classNames(classes.table_row, classes.table_headers, classes.table_logpas_headers)}>
-                    <div className={classes.table_item}>№</div>
-                    <div className={classes.table_item}>П/П</div>
-                    <div className={classes.table_item}>Шифр</div>
-                    <div className={classes.table_item}>Ф.И.О. студента</div>
-                    <div className={classes.table_item}>Логин</div>
-                    <div className={classes.table_item}></div>
+                <div className={classNames(classes.table_headers, classes.table_logpas_headers)}>
+                    <div className={classNames(classes.table_item, classes.table_item_num)}>№</div>
+                    <div className={classNames(classes.table_item, classes.table_item_num)}>П/П</div>
+                    <div className={classNames(classes.table_item, classes.table_item_pay)}>Шифр</div>
+                    <div className={classNames(classes.table_item, classes.table_item_logname)}>Ф.И.О. студента</div>
+                    <div className={classNames(classes.table_item, classes.table_item_pay)}>Логин</div>
+                    <div className={classNames(classes.table_item, classes.table_item_pay)}></div>
                 </div>
                 {
                     studLogPass.studs.map((mark, i) =>{

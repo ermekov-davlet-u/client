@@ -1,5 +1,5 @@
-import Select , { ActionMeta, MultiValue, SingleValue } from "react-select";
-import React, { memo } from "react";
+import Select , { ActionMeta, SingleValue } from "react-select";
+import React, { memo, useEffect } from "react";
 import { IUniversalSelectType } from './../../store/models/directory';
 import "./Select.scss"
 
@@ -14,7 +14,7 @@ type SelectPropType = {
 
 
 function UXSelect({ 
-        options,
+        options = [],
         hundleChange,
         value,
         dsbl,
@@ -37,13 +37,23 @@ function UXSelect({
         }),
         menu: (base: any) => ({
             ...base,
-            zIndex: 100,    
+            zIndex: 100,   
         })
     };
+    useEffect(() =>{
+        if(options.length){
+            // hundleChange(options[0], {
+            //     action: "select-option",
+            //     name: undefined,
+            //     option: options[0]
+            // });
+        }
+        
+    }, [ options, dsbl ])
     return ( 
         <div className="select_wrap">
             {label && <label className="label" htmlFor="">{ label }</label>}
-            <Select isDisabled={!dsbl} className="react-select" classNamePrefix="filter"
+            <Select placeholder={"Не выбрано"} isDisabled={!dsbl} className="react-select" classNamePrefix="filter"
                 value={value} onChange={hundleChange} options={options} styles={styles} />
         </div>
      );

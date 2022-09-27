@@ -38,6 +38,7 @@ function StudGradeTableElem( {
     const [modal, setModal] = useState<boolean>(false)
     const directory = useAppSelector(state => state.studentMarks)
     const oldBallRef = useRef<number>(0)
+    const [canChange, setCanChange] = useState<boolean>(true)
     
 
     const [ markForm, setMarkForm ] = useState<FormType>({
@@ -61,7 +62,7 @@ function StudGradeTableElem( {
             credit: studGrade.kredits,
             ball: studGrade.ball,
             grade: studGrade.id_estimation,
-            statement: "",
+            statement: directory.statements.find(st => st.value == studGrade.id_f_est)?.label || "",
             uDate: new Date(studGrade.p36),
         })
         oldBallRef.current = studGrade.ball
@@ -75,19 +76,40 @@ function StudGradeTableElem( {
         setModal(false)
     }
 
+    const hundleChangeCanChange = async function() {
+        
+        const a = await directory.statements.find(st => st.value == studGrade.id_f_est)?.canaccessfest
+        setCanChange(a == 1? true : false)
+    }
+
+    useEffect(() => {
+        hundleChangeCanChange()
+    }, [  ])
+
+    function bgColor(n: number): string {
+        if(n == 1){
+            return "white"
+        }else if(n == 2){
+            return "#D3F1C9"
+        }else if(n == 0){
+            return "#FF80FF"
+        }
+        return ""
+    }
+
     return ( 
         <>
         <ModalDelete semester={directory.semesters.find(r => r.value == markForm.semester)?.label || ""} discipline={markForm.discipline } show={modal} actionFunc={delMark} close={()=>{
             setModal(false)
         }} />
-             <div className={classNames(classes.table_row, classes.table_row_gradestud)}>
-                <div className={classes.table_item}>
+             <div className={classNames(classes.table_row, classes.table_item_num)} style={{ backgroundColor:  bgColor(studGrade.N)}}>
+                <div className={classNames(classes.table_item, classes.table_item_num)}>
                     {
                         markForm.num
                     }
                 </div>
-                <div className={classes.table_item}>
-                    <UXSelect dsbl={true} options={directory.semesters} value={directory.semesters.find(r => r.value == markForm.semester)!} hundleChange={async(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                <div className={classNames(classes.table_item, classes.table_item_special)}>
+                    <UXSelect dsbl={canChange} options={directory.semesters} value={directory.semesters.find(r => r.value == markForm.semester)!} hundleChange={async(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         const res = await queryServer<{result:boolean}>(`http://localhost:3113/avn13/api/AVN13/formask/updateNotMarks?mmkey=${studGrade.id_mark_mag}_id_semester&newval=${newValue!.value}&oldval=${markForm.semester}}`)
                         if(res.result == true){
                             setMarkForm({
@@ -97,23 +119,23 @@ function StudGradeTableElem( {
                         }
                     }} />
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_logname)}>
                     {
                         markForm.discipline
                     }
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_journal)}>
                     {
                         markForm.formControl
                     }
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_module)}>
                     {
                         markForm.credit
                     }
                 </div>
-                <div className={classes.table_item}>
-                    <input type="number" max={100} min={0} onInput={(e: ChangeEvent<HTMLInputElement>) => {
+                <div className={classNames(classes.table_item, classes.table_item_module)}>
+                    <input type="number" disabled={!canChange} max={100} min={0} onInput={(e: ChangeEvent<HTMLInputElement>) => {
                         setMarkForm({
                             ...markForm,
                             ball: Number(e.target.value)
@@ -136,8 +158,8 @@ function StudGradeTableElem( {
                         markForm.ball
                     } />
                 </div>
-                <div className={classes.table_item}>
-                    <UXSelect dsbl={true} options={directory.estimation} value={directory.estimation.find(r => r.value == markForm.grade)!} hundleChange={async(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                <div className={classNames(classes.table_item, classes.table_item_pay)}>
+                    <UXSelect dsbl={canChange} options={directory.estimation.filter(es => es.Kredits == studGrade.id_examination)} value={directory.estimation.find(r => r.value == markForm.grade)!} hundleChange={async(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         const res = await queryServer<{result:boolean}>(`http://localhost:3113/avn13/api/AVN13/formask/updateNotMarks?mmkey=${studGrade.id_mark_mag}_id_estimation&newval=${newValue!.value}&oldval=${markForm.grade}`)
                         if(res.result == true){
                             setMarkForm({
@@ -147,14 +169,14 @@ function StudGradeTableElem( {
                         }
                         }} />
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_journal)}>
                     {
-                        markForm.ball
+                        markForm.statement
                     }
                 </div>
-                <div className={classes.table_item}>
+                <div className={classNames(classes.table_item, classes.table_item_date)}>
                     {
-                        <DatePicker dateFormat={"dd-MM-yyyy"} className={classes.date_picker} selected={new Date(markForm.uDate)} onChange={ async (date:Date) => {
+                        <DatePicker disabled={!canChange} dateFormat={"dd-MM-yyyy"} className={classes.date_picker} selected={new Date(markForm.uDate)} onChange={ async (date:Date) => {
                             const newDate = dayjs(date).format('YYYY-MM-D')
                             const oldDate = dayjs(markForm.uDate).format('YYYY-MM-D')
                             const res = await queryServer<{result:boolean}>(
@@ -169,11 +191,13 @@ function StudGradeTableElem( {
                     }} />
                     }
                 </div>
-                <div className={classNames(classes.table_item, classes.del_btn)} onClick={() => {
-                    setModal(true)
-                }}>
-                    Удалить
-                </div>
+                {
+                    canChange && <button className={classNames(classes.table_item, classes.del_btn)} onClick={() => {
+                        setModal(true)
+                    }}>
+                        Удалить
+                    </button>
+                }
             </div>
         </>
      );

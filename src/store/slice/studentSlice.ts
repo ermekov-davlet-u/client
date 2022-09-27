@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { IUniversalSelectType, IDisciplinesType, IRrnPermission, GradeType } from './../models/directory';
-import { IStudentType } from './../models/student';
+import { IUniversalSelectType } from './../models/directory';
 
 
 

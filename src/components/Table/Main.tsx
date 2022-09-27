@@ -2,45 +2,48 @@ import React, { useEffect, useState } from 'react';
 import classes from "./Table.module.scss"
 import classNames from 'classnames';
 import { useAppSelector } from '../../store/hook';
-import UXSelect from "../Select/index"
-import { IUniversalSelectType } from '../../store/models/directory';
-import { ActionMeta, SingleValue } from 'react-select';
 import TableElem from './TableElem';
-import ModalAddstudByStatement from './../Modal/ModalAddstudByStatement';
-import useStudQuery from '../../service/redux/main';
 import { useTranslation } from 'react-i18next';
-import "../../utils/i18next" 
+// import "../../utils/i18next" 
 
 
 function TableWrap() {
 
-    const marks = useAppSelector(state => state.studentGrade)
+    const { marks, estConfig } = useAppSelector(state => state.studentGrade)
     const { t, i18n } = useTranslation();
 
     useEffect(() => {
-        console.log(45984);
-        
         return () => {}
     },[])
     
-    const { setNewMarksByStudent } = useStudQuery()
 
     return ( 
         <section className={classes.main_wrap}>
            
             <div className={classes.container}>
-                <div className={classNames(classes.table_row, classes.table_headers)}>
-                    <div className={classes.table_item}>№</div>
-                    <div className={classes.table_item}>{ t("st:payment") }</div>
-                    <div className={classes.table_item}>Журнал</div>
-                    <div className={classes.table_item}>Ф.И.О. студентов</div>
-                    <div className={classes.table_item}>Преподаватель</div>
-                    <div className={classes.table_item}>Дата сдачи</div>
-                    <div className={classes.table_item}>Оценка</div>
-                    <div className={classes.table_item}>Особая оценка</div>
+                <div className={classNames(classes.table_headers)}>
+                    <div className={classNames(classes.table_item, classes.table_item_num)}>№</div>
+                    <div className={classNames(classes.table_item, classes.table_item_journal)}>{ t("st:payment") }</div>
+                    <div className={classNames(classes.table_item, classes.table_item_journal)}>Журнал</div>
+                    <div className={classNames(classes.table_item, classes.table_item_name)}>Ф.И.О. студентов</div>
+                    <div className={classNames(classes.table_item, classes.table_item_date)}>Преподаватель</div>
+                    {
+                        estConfig.map(config => {
+                            return (
+                                <div className={classNames(classes.table_item, classes.table_item_module)}>
+                                    {
+                                        config.name_pole
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                    <div className={classNames(classes.table_item, classes.table_item_date)}>Дата сдачи</div>
+                    <div className={classNames(classes.table_item, classes.table_item_grade)}>Оценка</div>
+                    <div className={classNames(classes.table_item, classes.table_item_special)}>Особая оценка</div>
                 </div>
                 {
-                    marks.marks.map((mark, i) =>{
+                    marks.map((mark, i) =>{
                         return(
                             <TableElem
                                 key={mark.id_mark_mag}

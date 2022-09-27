@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { IUniversalSelectType, IDisciplinesType, IRrnPermission, GradeType } from './../models/directory';
+import { IUniversalSelectType, IDisciplinesType, GradeType } from './../models/directory';
 
 
 
@@ -15,7 +15,10 @@ import { IUniversalSelectType, IDisciplinesType, IRrnPermission, GradeType } fro
       statements: IUniversalSelectType[],
       grades: GradeType[],
       estOther: IUniversalSelectType[],
-      rrnkPermis: IUniversalSelectType[]
+      rrnkPermis: IUniversalSelectType[],
+      ws: IUniversalSelectType[],
+      poleStatement: IUniversalSelectType[],
+      educForm: IUniversalSelectType[],
     } 
 
     const initialState: IInitialState = {
@@ -30,7 +33,10 @@ import { IUniversalSelectType, IDisciplinesType, IRrnPermission, GradeType } fro
       estimates: [],
       grades: [],
       estOther: [],
-      rrnkPermis: []
+      rrnkPermis: [],
+      ws: [],
+      poleStatement: [],
+      educForm: [],
     }
   
   export const counterSlice = createSlice({
@@ -72,6 +78,15 @@ import { IUniversalSelectType, IDisciplinesType, IRrnPermission, GradeType } fro
       },
       newRrnkPermission( state, action: PayloadAction<IUniversalSelectType[]>){
         state.rrnkPermis = action.payload
+      },
+      newWS: (state, action: PayloadAction<IUniversalSelectType[]>) => {
+        state.ws = action.payload
+      },
+      newPoleStatement(state, action: PayloadAction<IUniversalSelectType[]>) {
+        state.poleStatement = action.payload
+      },
+      newEducForm: ( state, action: PayloadAction<IUniversalSelectType[]>) => {
+        state.educForm = action.payload
       }
     }
   })
@@ -88,7 +103,10 @@ import { IUniversalSelectType, IDisciplinesType, IRrnPermission, GradeType } fro
     newStatements,
     newGrades,
     newEstOthers,
-    newRrnkPermission } = counterSlice.actions
+    newRrnkPermission,
+    newWS,
+    newPoleStatement,
+    newEducForm } = counterSlice.actions
   
 
   

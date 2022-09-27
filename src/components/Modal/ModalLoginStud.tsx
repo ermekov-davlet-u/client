@@ -1,7 +1,6 @@
 
 import classNames from 'classnames';
 import classes from "./Modal.module.scss"
-import { IoMdClose } from "react-icons/io"
 import { ChangeEvent, useEffect, useState } from 'react';
 
 interface ModalLoginStudPropType{

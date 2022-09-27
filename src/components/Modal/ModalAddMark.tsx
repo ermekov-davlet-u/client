@@ -4,12 +4,13 @@ import { ActionMeta, SingleValue } from 'react-select';
 import { IUniversalSelectType } from '../../store/models/directory';
 import classes from "./Modal.module.scss"
 import UXSelect from "../Select/index"
-import { useAppSelector } from '../../store/hook';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { ChangeEvent, useEffect, useState } from 'react';
 import useDirectory from '../../service/redux/directory';
 import { queryServer } from '../../hooks/fetch';
 import useStudQuery from '../../service/redux/main';
 import { ToastContainer, toast } from 'react-toastify';
+import { setLoading } from '../../store/slice/loadingSlice';
 
 interface ModalDeletePropType{
     show: boolean;
@@ -39,10 +40,10 @@ function ModalAddMark(
 
     const { semesters, disciplines, estimation, statements, formControls } = useAppSelector(state => state.studentMarks)
     const { setNewDisciplines, setNewSemesters, setNewFormControl, setNewGrade, setNewStatement } = useDirectory()
-    const notify = () => toast("успешно добавлено!");
+    const notify = () => toast.success("успешно добавлено!");
     const worning = () => toast.warning("Заполните все поля!");
     const error = () => toast.error("Не удалось добавить запись!");
-
+    const dispatch = useAppDispatch();
     const [ state, setState ] = useState<IFormCreateMark>({
         discipline: {value: 0,label: "Не выбрано" },
         semester: {value: 0,label: "Не выбрано" },
@@ -73,7 +74,7 @@ function ModalAddMark(
                     ...state,
                     [key]: value
                 })
-                setNewFormControl()
+            setNewFormControl()
             break;
             case "formControl": setState({ 
                 ...state,
@@ -83,7 +84,7 @@ function ModalAddMark(
                 ...state,
                 [key]: value
             })
-            setNewGrade()
+            setNewGrade(value.value)
             break;
             case "grade": setState({ 
                 ...state,
@@ -134,10 +135,12 @@ function ModalAddMark(
             return 
         }
 
-        const res: { result: boolean } = await queryServer(`http://localhost:3113/avn13/api/AVN13/Addstaticmark/addStaticmark?id_group=${idGroup}&id_student=${idStud}&id_discipline=${state.discipline.value}&id_semester=${state.semester.value}&id_examination=${state.formControl.value}&id_estimation=${state.grade.value}&id_f_est=${state.statement.value}&kredits=${state.kredit}&ball=${state.ball}`)    
+        const res: { result: boolean } = await queryServer(`http://localhost:3113/avn13/api/AVN13/Addstaticmark/addStaticmark?id_group=${idGroup}&id_student=${idStud}&id_discipline=${state.discipline.value}&id_semester=${state.semester.value}&id_examination=${state.formControl.value}&id_estimation=${state.grade.value}&id_f_est=${state.statement.value}&kredits=${state.kredit}&ball=${state.ball}`, "GET")    
+        await close()
         if(res.result){
-            setNewMarksByStudent(idGroup, idStud)
-            setState({
+            await dispatch(setLoading(true))
+            await setNewMarksByStudent(idGroup, idStud)
+            await setState({
                 discipline: {value: 0,label: "Не выбрано" },
                 semester: {value: 0,label: "Не выбрано" },
                 formControl: {value: 0,label: "Не выбрано" },
@@ -146,8 +149,8 @@ function ModalAddMark(
                 kredit: "",
                 ball: ""
             })
-            notify()
-            close()
+            await notify()
+            await dispatch(setLoading(false))
         }else{
             error()
         }
@@ -188,7 +191,7 @@ function ModalAddMark(
                                 }} />
                         </div>
                         <div className={classes.slect_row}>
-                            <input placeholder='Количество кредитов' min={0} max={100} type="number" className={classes.modal_inp} name="" id="" value={state.kredit} onInput={changeKreditForm} />
+                            <input placeholder='Количество кредитов' min={0} max={30} type="number" className={classes.modal_inp} name="" id="" value={state.kredit} onInput={changeKreditForm} />
                             <input placeholder='Балл' type="number" min={0} max={100} className={classes.modal_inp} name="" id="" value={state.ball} onInput={changeBallForm} />
                         </div>
                         <div className={classes.action_btns} style={{ justifyContent: 'flex-end' }}>

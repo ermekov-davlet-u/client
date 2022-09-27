@@ -1,6 +1,6 @@
 import { getgroups } from "process";
 import { GradeType, IEstCinfig, IMarks, IUniversalSelectType } from "../../store/models/directory";
-import { newDisciplines, newEstimates, newFacultiesList, newFormControls, newGrades, newGroup, newRates, newRrnkPermission, newSemesters, newStatements, newYears } from "../../store/slice/directorySlice";
+import { newDisciplines, newEducForm, newEstimates, newEstOthers, newFacultiesList, newFormControls, newGrades, newGroup, newRates, newRrnkPermission, newSemesters, newStatements, newWS, newYears } from "../../store/slice/directorySlice";
 import { newCanChangeDopusk, newEstConfig, newMarks } from "../../store/slice/studentGradeSlice";
 import { newEstimationMarks, newSemestersMarks, newStatmentsMarks, newDisciplineMarks, newFormControlsMarks } from "../../store/slice/studentMark";
 import { getDisciplines, 
@@ -23,7 +23,12 @@ import { getDisciplines,
     getAllEe,
     getEstimations,
     getAllDisciplines,
-    getAllExaminations} from "../directory";
+    getAllExaminations,
+    getWS,
+    getJournalFaculty,
+    getEducForm,
+    getJournalGroup,
+    getJournalEbevars} from "../directory";
 import { useAppDispatch } from './../../store/hook';
 import { IDisciplinesType, IRrnPermission } from './../../store/models/directory';
 
@@ -32,7 +37,12 @@ export default function useDirectory(){
 
     const dispatch = useAppDispatch()
     
-    async function setNewFaculties(){
+    async function setNewFaculties(id_a_year?: number, id_w_s?: number){
+        if( id_a_year && id_w_s ){
+            const res: IUniversalSelectType[] = await getJournalFaculty(id_a_year, id_w_s)
+            dispatch( newFacultiesList(res))
+            return
+        }
         const res: IUniversalSelectType[] = await getFaculty()
         dispatch( newFacultiesList(res))
     }
@@ -44,7 +54,12 @@ export default function useDirectory(){
         const res: IUniversalSelectType[] = await getRate()
         dispatch( newRates(res))
     }
-    async function setNewGroups(idFaculty: number , idYear: number, idRate: number){
+    async function setNewGroups(idFaculty: number , idYear: number, idRate: number, idEducForm?: number){
+        if(idEducForm){
+            const res: IUniversalSelectType[] = await getJournalGroup(idFaculty, idYear, idRate, idEducForm)
+            dispatch( newGroup(res) )
+            return
+        }
         const res: IUniversalSelectType[] = await getGroups(idFaculty, idYear, idRate)
         dispatch( newGroup(res) )
     }
@@ -84,7 +99,10 @@ export default function useDirectory(){
         if( idDisciplines && idGroup && idSemester &&idExaminations){
             const res: IUniversalSelectType[] = await getEbevars(idDisciplines, idExaminations, idGroup, idSemester)
             dispatch( newEstimates(res) )
+            return
         }
+        const res: IUniversalSelectType[] = await getJournalEbevars()
+        dispatch( newEstimates(res) )
     }
     async function setNewStatement(idExaminations?: number, idGroup?: number, idSemester?: number, idDisciplines?: number){
         if( idExaminations && idGroup && idSemester && idDisciplines){
@@ -99,14 +117,14 @@ export default function useDirectory(){
         if(idExaminations && idEbevar){
             const res: GradeType[] = await getEstbegend(idExaminations, idEbevar)
             dispatch( newGrades(res) )
-        }else{
-            const res: IUniversalSelectType[] = await getEstimations()
-            dispatch( newFormControlsMarks(res) )
+        }else if(idExaminations && !idEbevar){
+            const res: IUniversalSelectType[] = await getEstimations(idExaminations)
+            dispatch( newEstimationMarks(res) )
         }
     }
     async function setNewGradeOther( idEbevar: number ){
         const res: IUniversalSelectType[] = await getEstOther(idEbevar)
-        dispatch( newYears(res) )
+        dispatch( newEstOthers(res) )
     }
     async function setNewEstconfig( idEbevar: number, idFests: number){
         const res: IEstCinfig[] = await getEstconfig(idEbevar, idFests)
@@ -132,6 +150,15 @@ export default function useDirectory(){
         const res: IUniversalSelectType[] = await getAllEe()
         dispatch( newEstimationMarks(res) )
     }
+    async function setNewWS(){
+        const res: IUniversalSelectType[] = await getWS()
+        dispatch(newWS(res))
+    }
+
+    async function setNewEducForm(idYear: number, idFaculty: number, idRate: number){
+        const res: IUniversalSelectType[] = await getEducForm(idYear, idFaculty, idRate)
+        dispatch(newEducForm(res))
+    }
 
     return {
         setNewYears,
@@ -149,7 +176,9 @@ export default function useDirectory(){
         setNewMarks,
         setNewCanChangeDopusk,
         setNewRrnkPermission,
-        setNewEe
+        setNewEe,
+        setNewWS,
+        setNewEducForm
     }
 }
 

@@ -1,10 +1,10 @@
-
-
+$color: #333;
+$btnPdd: 8px 24px;
 
 .header{
-    padding: 12px 24px;
+    padding: $btnPdd;
     max-width: 100%;
-    width: 1840px;
+    // width: 1840px;
     margin: 0 auto;
 }
 .container{
@@ -31,7 +31,7 @@
 }
 .header_li{
     list-style: none;
-    padding: 8px 28px;
+    padding: $btnPdd;
     cursor: pointer;
     font-weight: 700;
     color: #666;
@@ -42,17 +42,33 @@
     padding-left   : 32px;
 }
 .right_btn{
-    padding: 8px 28px;
-    border: 2px solid #333;
+    padding: $btnPdd;
+    border: 1px solid $color;
     outline: none;
     cursor: pointer;
     font-weight: 700;
     border-radius: 2px;
+    margin-left: 12px;
 }
 .header_icon{
     margin-right: 12px;
 }
 .active_li{
     color: black;
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid $color;
+}
+.lang_btn{
+    padding: 4px 8px;
+    border: none;
+    margin-left: 4px;
+    font-weight: 700;
+    color: #999;
+    &:hover{
+        color: #000;
+        cursor: pointer;
+    }
+}
+.leave_btn{
+    text-decoration: none;
+    color: $color;
 }

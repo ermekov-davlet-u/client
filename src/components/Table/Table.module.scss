@@ -1,24 +1,30 @@
-
+$small: 300px;
+$medium: 1440px;
 .main_wrap{
-    max-width: calc(100% - 48px);
-    width: 1840px;
-    padding: 0 24px;
+    // max-width: calc(100% - 48px);
+    // width: 1840px;
+    padding: 0 14px;
     min-width: 980px;
 }
 .container{
-    width: 100%;
-    min-width: 1300px;
+    // width: 100%;
+    // min-width: 1300px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
 }
 .table_row{
-    display: grid;
-    grid-template-columns: 48px 140px 80px 6fr 6fr 4fr 3fr 4fr;
-    grid-auto-rows: minmax(28px, 38px);
+    // display: grid;
+    // grid-template-columns: 48px 140px 80px 6fr 6fr 4fr 3fr 4fr;
+    // grid-auto-rows: minmax(28px, 38px);
     margin-bottom: 4px;
     box-shadow: 0 0 3px rgb(161, 161, 161);
     margin-bottom: 4px;
+    display: flex;
     &:hover{
-        background-color: rgb(252, 252, 181);
-        // cursor: pointer;
+        background-color: rgb(252, 252, 181) !important;
+        cursor: default;
     }
 }
 .table_headers{
@@ -26,6 +32,11 @@
     background-color: #99b19c !important  ;
     color: white;
     margin: 0;
+    height: 48px;
+    margin-bottom: 4px;
+    box-shadow: 0 0 3px rgb(161, 161, 161);
+    margin-bottom: 4px;
+    display: flex;
 }
 .table_item{
     padding: 4px 12px;
@@ -34,7 +45,7 @@
     justify-content: center;
 }
 .date_picker{
-    width: 160px;
+    width: 120px;
     padding: 4px;
 }
 .react-datepicker__input-container{
@@ -42,7 +53,7 @@
     padding: 14px !important;
 }
 .main_log_pass_wrap{
-    width: 1240px;
+    width: 780px;
     margin: 0 auto;
 }
 .table_logpas_headers{
@@ -51,24 +62,111 @@
 .stud_logpass{
     grid-template-columns: 48px 2fr 6fr 3fr 4fr 1fr;
 }
-.table_row_gradestud{
-    grid-template-columns: 48px 2fr 6fr 2fr 2fr 1fr 2fr 2fr 3fr 1fr;
-    @media screen and (max-width: 1440px) {
-        grid-template-columns: 48px 140px 320px 100px 96px 82px 120px 120px 172px 96px;
-    }
-}
+// .table_row_gradestud{
+//     grid-template-columns: 48px 2fr 6fr 2fr 2fr 1fr 2fr 2fr 3fr 1fr;
+//     @media screen and (max-width: 1440px) {
+//         grid-template-columns: 48px 140px 320px 100px 96px 82px 120px 120px 172px 96px;
+//     }
+// }
 
 .del_btn{
     font-weight: 600;
+    border: none;
+    outline: none;
+    background-color: transparent;
     &:hover{
         color: rgb(165, 32, 32);
         cursor: pointer;
-        background-color: #ffffff;
+        // background-color: #ffffff;
         transform: scale(1.1)
     }
 }
 .ball_inp{
-    width: 48px;
+    width: 42px;
     border: none;
+    outline: none;
+    padding: 4px 0;
+    background-color: transparent;
+    &:focus{
+        background-color: #fff;
+    }
+}
+.diplom_row{
+    // grid-template-columns: 48px  minmax(140px, 320px) minmax(110px, 120px) minmax(110px, 120px) minmax(160px, 160px) 170px 140px 130px 140px minmax(240px,1fr);
+    
+}
+.theme{
+    width: calc(100% - 48px);
+    border-color: #aaa;
+}
+
+.table_item_num{
+    min-width: 48px;
+}
+.table_item_pay{
+    min-width: 120px;
+}
+.table_item_journal{
+    min-width: 120px;
+    max-width: 120px;
+    @media screen and (max-width: $medium) {
+        min-width: 80px;
+        max-width: 80px;
+    }
+}
+.table_item_name{
+    min-width: 220px;
+    max-width: 220px;
+}
+.table_item_logname{
+    min-width: 360px;
+    max-width: 360px;
+    @media screen and (max-width: $medium) {
+        min-width: 260px;
+        max-width: 260px;
+    }
+}
+.table_item_teacher{
+    min-width: 220px;
+    max-width: 220px;
+}
+.table_item_module{
+    min-width: 58px;
+    max-width: 58px;
+    display: flex;
+    justify-content: center;
+}
+.table_item_date{
+    min-width: 180px;
+    max-width: 180px;
+    @media screen and (max-width: $medium) {
+        min-width: 130px;
+        max-width: 130px;
+    }
+}
+.table_item_grade{
+    min-width: 140px;
+    max-width: 140px;
+    @media screen and (max-width: $medium) {
+        min-width: 120px;
+        max-width: 120px;
+    }
+}
+.table_item_special{
+    min-width: 220px;
+    max-width: 220;
+    @media screen and (max-width: $medium) {
+        min-width: 120px;
+        max-width: 120px;
+    }
+}
+.table_item_btn{
+    cursor: pointer;
+}
+.regnumber{
+    max-width: 80px;
+    border: 1px solid #aaa;
+    padding: 3px 4px;
+    border-radius: 3px;
     outline: none;
 }

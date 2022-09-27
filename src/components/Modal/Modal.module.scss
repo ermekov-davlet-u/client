@@ -128,12 +128,10 @@
   background-color: rgba(31,32,41,.75);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 250ms 700ms ease;
 }
 .modal_btn:checked ~ .modal{
   pointer-events: auto;
   opacity: 1;
-  transition: all 300ms ease-in-out;
 }
 .modal_wrap {
   position: relative;
@@ -152,7 +150,6 @@
     box-shadow: 0 12px 25px 0 rgba(199,175,189,.25);
   opacity: 0;
   transform: scale(0.6);
-  transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
 }
 .modal_wrap img {
   display: block;
@@ -165,7 +162,6 @@
 .modal_btn:checked ~ .modal .modal_wrap{
   opacity: 1;
   transform: scale(1);
-  transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
 }
 
 
@@ -175,18 +171,15 @@
 	left: 25px;
 	display: block;
 	z-index: 1000;
-	transition: all 250ms linear;
 }
 .logo img {
 	height: 26px;
 	width: auto;
 	display: block;
   	filter: brightness(10%);
-	transition: filter 250ms 700ms linear;
 }
 .modal_btn:checked ~ .logo img {
   	filter: brightness(100%);
-	transition: all 250ms linear;
 }
 
 

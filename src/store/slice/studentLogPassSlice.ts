@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IEstCinfig, IMarks, IStundentLogPass } from "../models/directory";
+import { IStundentLogPass } from "../models/directory";
 
 
 

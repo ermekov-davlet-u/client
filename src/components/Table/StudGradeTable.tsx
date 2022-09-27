@@ -36,6 +36,10 @@ function StudGradeTable() {
             dispatch(newStudentMarks([]))
         }
     }, [])
+
+    useEffect(() => {
+        setNewEe()
+    }, [student.students])
     
 
     return ( 
@@ -43,17 +47,17 @@ function StudGradeTable() {
         {/* <ModalDelete show={modal.show} actionFunc={delMark} close={closeModal} /> */}
             <section className={classes.main_wrap}>
                 <div className={classes.container}>
-                    <div className={classNames(classes.table_row, classes.table_headers, classes.table_row_gradestud)}>
-                        <div className={classes.table_item}>№</div>
-                        <div className={classes.table_item}>Семестр</div>
-                        <div className={classes.table_item}>Дисциплина</div>
-                        <div className={classes.table_item}>Форма контроля</div>
-                        <div className={classes.table_item}>Кредиты</div>
-                        <div className={classes.table_item}>Балл</div>
-                        <div className={classes.table_item}>Оценка</div>
-                        <div className={classes.table_item}>Форма ведомости</div>
-                        <div className={classes.table_item}>Дата сдачи</div>
-                        <div className={classes.table_item}>Удалить</div>
+                    <div className={classNames(classes.table_headers, classes.table_row_gradestud)}>
+                        <div className={classNames(classes.table_item, classes.table_item_num)}>№</div>
+                        <div className={classNames(classes.table_item, classes.table_item_special)}>Семестр</div>
+                        <div className={classNames(classes.table_item, classes.table_item_logname)}>Дисциплина</div>
+                        <div className={classNames(classes.table_item, classes.table_item_journal)}>Форма контроля</div>
+                        <div className={classNames(classes.table_item, classes.table_item_module)}>Кредиты</div>
+                        <div className={classNames(classes.table_item, classes.table_item_module)}>Балл</div>
+                        <div className={classNames(classes.table_item, classes.table_item_pay)}>Оценка</div>
+                        <div className={classNames(classes.table_item, classes.table_item_journal)}>Форма ведомости</div>
+                        <div className={classNames(classes.table_item, classes.table_item_date)}>Дата сдачи</div>
+                        <div className={classNames(classes.table_item, classes.del_btn)}>Удалить</div>
                     </div>
                     {
                         student.students.map((mark, i) =>{

@@ -1,33 +1,27 @@
 
 import classNames from 'classnames';
-import { ActionMeta, SingleValue } from 'react-select';
-import { IUniversalSelectType } from '../../store/models/directory';
 import classes from "./Modal.module.scss"
-import UXSelect from "../Select/index"
 import { useAppSelector } from '../../store/hook';
 import { ChangeEvent, useEffect, useState } from 'react';
-import useDirectory from '../../service/redux/directory';
 import { queryServer } from '../../hooks/fetch';
 import useStudQuery from '../../service/redux/main';
 import { ToastContainer, toast } from 'react-toastify';
 import { newEducSh } from '../../store/slice/educShSlice';
 import { useAppDispatch } from './../../store/hook';
+import { IEducSh } from './../../store/models/student';
+import { setLoading } from '../../store/slice/loadingSlice';
 
 interface ModalDeletePropType{
     show: boolean;
-    idGroup: number;
     idStud: number;
+    idGroup: number;
     close: () => void;
 }
 
-interface IFormCreateMark{
-    discipline: IUniversalSelectType;
-    semester: IUniversalSelectType;
-    formControl: IUniversalSelectType;
-    grade: IUniversalSelectType;
-    statement: IUniversalSelectType;
-    kredit: string;
-    ball: string;
+interface IFormCreate{
+    id_group: number;
+    id_student: number;
+    newVals: IEducSh[];
 }
 
 function ModalAddEducPlan(
@@ -39,23 +33,44 @@ function ModalAddEducPlan(
     }:ModalDeletePropType
 ) {
 
+    const [ form, setForm ] = useState<IFormCreate>({
+        id_group: 0,
+        id_student: 0,
+        newVals: []
+    })
     const { educSh } = useAppSelector(state => state.educSh)
     const dispatch = useAppDispatch()
-    const { setNewDisciplines, setNewSemesters, setNewFormControl, setNewGrade, setNewStatement } = useDirectory()
-    const notify = () => toast("успешно добавлено!");
+    const notify = () => toast.success("успешно добавлено!");
     const worning = () => toast.warning("Заполните все поля!");
     const error = () => toast.error("Не удалось добавить запись!");
-
     
-    const { setNewEducSh } = useStudQuery()
+    const { setNewEducSh, setNewMarksByStudent } = useStudQuery()
 
     useEffect(() => {
         setNewEducSh(idGroup, idStud)
+        setForm({
+            id_student: idStud,
+            id_group: idGroup,
+            newVals: []
+        })
     }, [idStud])
 
     async function createNew () {
-        
-
+        const res: { result: string } = await queryServer("http://localhost:3113/avn13/api/AVN13/DiscCopyFromEducSh/addDiscfromeducsh", "post", form)
+        close()
+        if(res.result){
+            await dispatch(setLoading(true))
+            await setForm({
+                ...form,
+                newVals: []
+            })
+            await dispatch(newEducSh([]))
+            await notify()
+            await setNewMarksByStudent(idGroup, idStud)
+            await dispatch(setLoading(false))
+        }else{
+            error()
+        }
     }
     
 
@@ -75,9 +90,24 @@ function ModalAddEducPlan(
                             {
                                 educSh.map( item => {
                                     return <li className={classes.list_item}>
-                                                <input type="checkbox" onClick={() => {
-
-                                                }} />
+                                                <input type="checkbox" onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                                    if( e.target.checked ){
+                                                        const newval: IEducSh = item
+                                                        setForm({
+                                                            ...form,
+                                                            newVals:[
+                                                                ...form.newVals,
+                                                                newval
+                                                            ]
+                                                        })
+                                                    }else{
+                                                        const  newVals =  form.newVals.filter(elem => elem.id_discipline !== item.id_discipline)
+                                                        setForm({
+                                                            ...form,
+                                                            newVals: newVals
+                                                        })
+                                                    }
+                                                }}/>
                                                 {
                                                     item.p34
                                                 }
@@ -92,7 +122,11 @@ function ModalAddEducPlan(
                             <button className={classNames(classes.action_btn, classes.cancel_btn)} onClick={() => {
                                 close();
                                 dispatch(newEducSh([]))
-                            }}>
+                                setForm({
+                                    ...form,
+                                    newVals: []
+                                    })
+                                }}>
                                 Отмена
                             </button> 
                         </div>          		

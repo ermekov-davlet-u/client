@@ -56,3 +56,28 @@ export interface ISelMarkMag{
     isChecked: number
     s_fio: string
 }
+
+export interface IDiplom{
+    dataDecisionGAK: Date | null
+    dateGive: Date | null
+    excellent: boolean
+    id_diplom: number
+    id_diploma_kval: number | null
+    id_group: number
+    id_student: number
+    number: number | null
+    regnumber: number | null
+    s_fio: string
+    seria: string | null
+    themeVKR: string | null
+}
+
+export interface IJournal{
+    AVN_update: Date
+    beg_date: Date
+    end_date: Date
+    id_ebe_var: number
+    name_pole: string
+    p20: string
+    p108: string
+}

@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ISelectFormType } from '../../hooks/select';
 import { useAppDispatch } from './../../store/hook';
 import { newSelMarkMag } from '../../store/slice/selMerkMagSlice';
+import { setLoading } from '../../store/slice/loadingSlice';
 
 interface ModalDeletePropType{
     show: boolean;
@@ -21,10 +22,7 @@ interface ModalDeletePropType{
     selectValue: ISelectFormType
 }
 
-interface IFormCreateMark{
-    discipline: IUniversalSelectType;
-    
-}
+
 
 interface ISelMarkMag{
     ball: number
@@ -46,7 +44,6 @@ function ModalAddstudByStatement(
     {   
         close,
         show,
-        idGroup,
         selectValue
     }:ModalDeletePropType
 ) {
@@ -65,7 +62,7 @@ function ModalAddstudByStatement(
     const worning = () => toast.warning("Заполните все поля!");
     const error = () => toast.error("Не удалось добавить запись!");
     
-    const { setNewEducSh, setNewSelMarkMag } = useStudQuery()
+    const { setNewSelMarkMag } = useStudQuery()
 
     useEffect(() => {
         setNewStatement()
@@ -80,18 +77,20 @@ function ModalAddstudByStatement(
             return
         }
         const res: { result: boolean } = await queryServer("http://localhost:3113/avn13/api/AVN13/AddStudByVedomost/addStudentByVedomost", "POST", state)
+        close()
         if(res.result){
-            setNewMarks( selectValue.formControl.value, selectValue.estimate.value, selectValue.group.value, selectValue.semester.value, selectValue.discipline.Kredits, selectValue.year.value, selectValue.discipline.value, selectValue.statement.value)
-            notify()
-            close()
-            dispatch(newSelMarkMag([]))
-            setState({
-                    id_ebe_var: 0,
-                    id_f_estSelect: {value: 0,label: "Не выбрано"},
-                    id_f_est:0,
-                    newvals:[]
-                })
+            await dispatch(setLoading(true))
+            await setNewMarks( selectValue.formControl.value, selectValue.estimate.value, selectValue.group.value, selectValue.semester.value, selectValue.discipline.Kredits, selectValue.year.value, selectValue.discipline.value, selectValue.statement.value)
+            await notify()
+            await dispatch(newSelMarkMag([]))
+            await setState({
+                id_ebe_var: 0,
+                id_f_estSelect: {value: 0,label: "Не выбрано"},
+                id_f_est:0,
+                newvals:[]
+            })
             setNewStatement(selectValue.formControl.value, selectValue.group.value, selectValue.semester.value, selectValue.discipline.value)
+            await dispatch(setLoading(false))
         }
     }
 

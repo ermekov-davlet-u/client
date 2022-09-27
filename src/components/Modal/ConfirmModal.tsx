@@ -2,47 +2,41 @@
 import classNames from 'classnames';
 import classes from "./Modal.module.scss"
 
-interface ModalDeletePropType{
+interface ModalConformPropType{
     show: boolean;
     actionFunc: () => void;
     close: ()=> void;
-    semester: string;
-    discipline: string;
+    title?: string
 }
 
-function ModalDelete(
+function ModalConfirm(
     {
         show,
         actionFunc,
         close,
-        semester,
-        discipline,
-    }:ModalDeletePropType
+        title = ""
+    }:ModalConformPropType
 ) {
     return ( 
         <>
             <div className={classNames(classes.section, classes.full_height)}>
-                {/* <IoMdClose className={classes.close} onClick={close} /> */}
                 <input className={classes.modal_btn} type="checkbox" checked={show || false} id="modal-btn" name="modal-btn" onChange={() => {}}/>
-                {/* <label htmlFor="modal-btn">Удалить <i className={classNames(classes.uil, classes.uil_expand_arrows)}></i></label> 		 */}
                 <div className={classes.modal}>		
                     <div className={classes.modal_wrap} style={{ maxWidth: '400px' }}>	
                         <p className={classes.modal_title}>
-                            Удалить запись
+                            Подтвердите действия
                         </p>
-                        <p className={classes.line}>
+                        <p>
                             {
-                                discipline
+                                title
                             }
                         </p>
-                        <p className={classes.line}>
-                            {
-                                semester
-                            }
-                        </p>	
                         <div className={classes.action_btns}>
-                            <button className={classNames(classes.action_btn, classes.del_btn)} onClick={actionFunc}>
-                                Удалить
+                            <button className={classNames(classes.action_btn, classes.cancel_btn)} onClick={async() => {
+                                await actionFunc()
+                                close()
+                            }}>
+                                Подтвердить
                             </button>   
                             <button className={classNames(classes.action_btn, classes.cancel_btn)} onClick={close}>
                                 Отмена
@@ -55,4 +49,4 @@ function ModalDelete(
      );
 }
 
-export default ModalDelete;
+export default ModalConfirm;

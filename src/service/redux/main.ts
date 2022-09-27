@@ -1,13 +1,19 @@
 
 import { IStundentLogPass, IUniversalSelectType } from '../../store/models/directory';
 import { newEducSh } from '../../store/slice/educShSlice';
+import { newDiplomGroup, newKvalification } from '../../store/slice/kvalification';
 import { newSelMarkMag } from '../../store/slice/selMerkMagSlice';
 import { newStudLogPass } from '../../store/slice/studentLogPassSlice';
-import { newStudentMarks } from '../../store/slice/studentMark';
+import { newSemestersMarks, newStudentMarks } from '../../store/slice/studentMark';
 import { newStudents } from '../../store/slice/studentSlice';
-import { getEducShDiscipline, getLoginPassStud, getMarksByStudent, getSelMarkMag, getStudents } from '../main';
+import { newDiplom } from "../../store/slice/diplomSlice"
+import { getDiplomGroup, getDiplomStud, getEducShDiscipline, getJournal, getKvalification, getLoginPassStud, getMarksByStudent, getPhotoStud, getSelMarkMag, getSemesters, getStudents } from '../main';
 import { useAppDispatch } from './../../store/hook';
-import { IEducSh, ISelMarkMag, IStudentGrade, IStudentType } from './../../store/models/student';
+import { IDiplom, IEducSh, ISelMarkMag, IStudentGrade } from './../../store/models/student';
+import { getPoleStatement } from '../directory';
+import { newPoleStatement } from '../../store/slice/directorySlice';
+import { newJournal } from '../../store/slice/journalSlice';
+import { newStudPhoto } from '../../store/slice/studentGradeSlice';
 
 
 
@@ -25,9 +31,25 @@ export default function useStudQuery() {
         dispatch(newStudents(students))
     }
 
-    async function setNewMarksByStudent(idGroup: number, idStudent: number){
+    async function setNewMarksByStudent(idGroup: number, idStudent: number, idSemester?: number) {
+        if(idSemester){
+            const students: IStudentGrade[] = await getMarksByStudent<IStudentGrade[]>(idGroup, idStudent)
+            const newStudents = await students.filter(student => student.id_semester == idSemester)
+            dispatch(newStudentMarks(newStudents))
+            return
+        }
         const students: IStudentGrade[] = await getMarksByStudent<IStudentGrade[]>(idGroup, idStudent)
         dispatch(newStudentMarks(students))
+    }
+
+    async function getSemestersByStudent(idGroup: number){
+        const res: IUniversalSelectType[] = await getSemesters(idGroup)
+        dispatch(newSemestersMarks(res))
+    }
+
+    async function setNewPhotoByStudent(idStudent: number){
+        const photo: any = await getPhotoStud<any>(idStudent)
+        dispatch(newStudPhoto(photo))
     }
 
     async function setNewEducSh(idGroup: number, idStudent: number){
@@ -40,11 +62,41 @@ export default function useStudQuery() {
         dispatch(newSelMarkMag(res))
     }
 
+    async function setNewKvalification(){
+        const res = await getKvalification<IUniversalSelectType[]>()
+        dispatch(newKvalification(res))
+    }
+
+    async function setNewDiplomGroup(idYear: number, idFaculty: number){
+        const res = await getDiplomGroup<IUniversalSelectType[]>(idYear, idFaculty)
+        dispatch(newDiplomGroup(res))
+    }
+
+    async function setNewDiplomStud( idGroup: number ) {
+        const res = await getDiplomStud<IDiplom>(idGroup)
+        dispatch(newDiplom(res))
+    }
+    async function setNewPoleStatement(idEbevar: number){
+        const res = await getPoleStatement(idEbevar)
+        dispatch(newPoleStatement(res))
+    }
+    async function setNewJournal(idYear: number, idWS: number, idFaculty: number, idRate: number) {
+        const res = await getJournal(idYear, idWS, idFaculty, idRate)
+        dispatch(newJournal(res))
+    }
+
     return {
         setNewLoginPassStud,
         setNewStudents,
         setNewMarksByStudent,
+        getSemestersByStudent,
+        setNewPhotoByStudent,
         setNewEducSh,
-        setNewSelMarkMag
+        setNewSelMarkMag,
+        setNewKvalification,
+        setNewDiplomGroup,
+        setNewDiplomStud,
+        setNewPoleStatement,
+        setNewJournal
     }
 } 

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
-import { IDisciplinesType, IUniversalSelectType } from "../store/models/directory"
+import { IUniversalSelectType } from "../store/models/directory"
+import { setLoading } from "../store/slice/loadingSlice";
+import { newMarks } from "../store/slice/studentGradeSlice";
 import useDirectory from './../service/redux/directory';
+import { useAppDispatch } from './../store/hook';
 
 export interface ISelectFormType {
     faculty: IUniversalSelectType,
@@ -16,7 +19,6 @@ export interface ISelectFormType {
 }
 
 export default function useSelect(){
-
     const {
         setNewYears,
         setNewFaculties,
@@ -31,7 +33,8 @@ export default function useSelect(){
         setNewEstconfig,
         setNewMarks,
         setNewCanChangeDopusk,
-        setNewRrnkPermission
+        setNewRrnkPermission,
+        setNewGradeOther
     } = useDirectory()
 
     const [selectForm, setSelctForm] = useState<ISelectFormType>({
@@ -45,8 +48,9 @@ export default function useSelect(){
         estimate: {value: 0,label: "Не выбрано" },
         statement: {value: 0,label: "Не выбрано" },
     })
+    const dispatch = useAppDispatch()
     
-    const changeSelectForm = ( selectFormKey: keyof ISelectFormType, value: IUniversalSelectType  ) => {
+    const changeSelectForm = async  ( selectFormKey: keyof ISelectFormType, value: IUniversalSelectType  ) => {
         switch ( selectFormKey ) {
             case "faculty": setSelctForm({
                     [selectFormKey]: value,
@@ -129,14 +133,17 @@ export default function useSelect(){
                 })
                 setNewStatement(selectForm.formControl.value, selectForm.group.value, selectForm.semester.value, selectForm.discipline.value)
                 setNewGrade(selectForm.formControl.value, value.value)
+                setNewGradeOther(value.value)
             break;
             case "statement": setSelctForm({
                 ...selectForm,
                 statement: value
                 })
-                setNewEstconfig(selectForm.estimate.value, value.value)
-                setNewMarks( selectForm.formControl.value, selectForm.estimate.value, selectForm.group.value, selectForm.semester.value, selectForm.discipline.Kredits, selectForm.year.value, selectForm.discipline.value, value.value)
-                setNewCanChangeDopusk()
+                await dispatch(setLoading(true));
+                await setNewEstconfig(selectForm.estimate.value, value.value)
+                await setNewMarks( selectForm.formControl.value, selectForm.estimate.value, selectForm.group.value, selectForm.semester.value, selectForm.discipline.Kredits, selectForm.year.value, selectForm.discipline.value, value.value)
+                await setNewCanChangeDopusk()
+                await dispatch(setLoading(false));
             break;
         }
     } 
@@ -146,6 +153,11 @@ export default function useSelect(){
         setNewFaculties()
         setNewRates()
     },[])
+    useEffect(() => {
+        if(selectForm.formControl.value == 0){
+            dispatch(newMarks([]))
+        }
+    }, [selectForm.statement.value])
     
     return {
         selectForm,

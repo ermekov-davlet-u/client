@@ -9,6 +9,9 @@ export interface IUniversalSelectType{
     label: string,
     disabled?: boolean
     Kredits?: number
+    subValue?: string;
+    canaccessfest?: number;
+    newBool?: boolean
 }
 
 export interface GradeType extends IUniversalSelectType{
@@ -29,19 +32,6 @@ export interface IDisciplinesType extends IUniversalSelectType{
     Kredits: number
 }
 
-export interface IEstCinfig{
-    formula: string
-    id_ebe_var: number
-    id_est_config: number
-    id_f_est: number
-    info_or_value: number
-    max: number
-    min: number
-    min_start: null
-    name_pole: string
-    order_pole: number
-    pole_mark_mag: string
-}
 
 export interface IMarks {
     AVN_update: Date
@@ -50,13 +40,13 @@ export interface IMarks {
     dop: number
     dop2: number
     dopusk_izm: boolean
-    estimation_other: null
+    estimation_other: number
     id_a_year: number
     id_bk: number
     id_discipline: number
     id_ebe_var: number
     id_estimation: number
-    id_estimation_other: null
+    id_estimation_other: number
     id_examination: number
     id_f_est: number
     id_faculty: number
@@ -99,3 +89,43 @@ export interface IStundentLogPass {
     login: string
     s_fio: string
 } 
+
+export type FormType = {
+    num: number;
+    dopusk: string;
+    journal: string;
+    studName: string;
+    teacher: number;
+    uDate: Date;
+    grade: number;
+    specialGrade: number;
+    m1: number;
+    m2: number;
+    m3: number;
+    m4: number;
+    m5: number;
+    m6: number;
+    m7: number;
+    m8: number;
+    m9: number;
+    m10: number;
+    m11: number;
+    m12: number;
+    dop: number;
+    dop2: number;
+    ball1: number;
+}
+
+export interface IEstCinfig{
+    formula: string
+    id_ebe_var: number
+    id_est_config: number
+    id_f_est: number
+    info_or_value: number
+    max: number
+    min: number
+    min_start: null
+    name_pole: string
+    order_pole: number
+    pole_mark_mag: keyof FormType
+}
