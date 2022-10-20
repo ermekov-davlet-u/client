@@ -62,13 +62,13 @@ function DiplomSelect() {
                     Выберите критерии
                 </h2>
                 <div className={classes.container}>
-                    <UXSelect dsbl={true} value={selectForm.year} options={ years } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Учебный год' dsbl={true} value={selectForm.year} options={ years } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeJournalSelectForm("year", newValue!)
                     }} />
-                    <UXSelect dsbl={!!selectForm.year.value} value={selectForm.faculty} options={ faculties } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Факультет' dsbl={!!selectForm.year.value} value={selectForm.faculty} options={ faculties } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeJournalSelectForm("faculty", newValue!)
                     }} />
-                    <UXSelect dsbl={!!selectForm.faculty.value} value={selectForm.group} options={ diplomGroup } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Группа' dsbl={!!selectForm.faculty.value} value={selectForm.group} options={ diplomGroup } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeJournalSelectForm("group", newValue!)
                         setNewDiplomStud(newValue!.value)
                         dispatch(newGroupId(newValue!))

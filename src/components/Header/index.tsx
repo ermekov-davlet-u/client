@@ -5,7 +5,6 @@ import Sidebar from './../Sidebar/index';
 import { queryServer } from '../../hooks/fetch';
 import classNames from 'classnames';
 
-
 function Header() {
 
     const { t, i18n, ready } = useTranslation();

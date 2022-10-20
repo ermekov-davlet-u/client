@@ -172,28 +172,28 @@ function JournalSelect() {
                     Выберите критерии
                 </h2>
                 <div className={classes.container}>
-                    <UXSelect label='test' dsbl={true} value={selectForm.year} options={ years } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Учебный год' dsbl={true} value={selectForm.year} options={ years } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("year", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.year.value} value={selectForm.ws} options={ ws } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Полугодие' dsbl={!!selectForm.year.value} value={selectForm.ws} options={ ws } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("ws", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.ws.value} value={selectForm.faculty} options={ faculties } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Факкультет' dsbl={!!selectForm.ws.value} value={selectForm.faculty} options={ faculties } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("faculty", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.year.value} value={selectForm.rate} options={ rates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Курс' dsbl={!!selectForm.year.value} value={selectForm.rate} options={ rates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("rate", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.rate.value} value={selectForm.educForm} options={ educForm } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Форма обучения' dsbl={!!selectForm.rate.value} value={selectForm.educForm} options={ educForm } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("educForm", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.educForm.value} value={selectForm.group} options={ groups } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Группа' dsbl={!!selectForm.educForm.value} value={selectForm.group} options={ groups } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("group", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.group.value} value={selectForm.esimate} options={ estimates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Правило оценок' dsbl={!!selectForm.group.value} value={selectForm.esimate} options={ estimates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("esimate", newValue!)
                     }} />
-                    <UXSelect label='test' dsbl={!!selectForm.esimate.value} value={selectForm.poleStatement} options={ poleStatement } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                    <UXSelect label='Форма ведомости' dsbl={!!selectForm.esimate.value} value={selectForm.poleStatement} options={ poleStatement } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                         changeDiplomSelectForm("poleStatement", newValue!)
                     }} />
                     <div className={classes.flex}>

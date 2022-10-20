@@ -42,45 +42,41 @@ function Selects() {
             (navidate.pathname !== "/avn13/diplom" && navidate.pathname !== "/avn13/journal") &&
             <div className={classes.wrap}>
                 <section className={classNames(classes.selects,  )}>
-                    
                         <h2 className={classNames(classes.selects_title,  )}>
                             Выберите критерии
                         </h2>
-                    
                         <div className={classes.container}>
-                            <UXSelect dsbl={true} value={selectForm.faculty} options={ faculties } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                            <UXSelect label="Факультет" dsbl={true} value={selectForm.faculty} options={ faculties } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                 changeSelectForm("faculty", newValue!)
-                                console.log(actionMeta);
-                                
                             }} />
-                            <UXSelect dsbl={!!selectForm.faculty.value} value={selectForm.year} options={ years } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                            <UXSelect label="Учебный год" dsbl={!!selectForm.faculty.value} value={selectForm.year} options={ years } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                 changeSelectForm("year", newValue!)
                             }} />
-                            <UXSelect dsbl={!!selectForm.year.value} value={selectForm.rate} options={ rates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                            <UXSelect label="Курс" dsbl={!!selectForm.year.value} value={selectForm.rate} options={ rates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                 changeSelectForm("rate", newValue!)
                             }} />
-                            <UXSelect dsbl={!!selectForm.rate.value} value={selectForm.group} options={ groups } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                            <UXSelect label="Группа" dsbl={!!selectForm.rate.value} value={selectForm.group} options={ groups } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                 changeSelectForm("group", newValue!)
                                 setNewLoginPassStud(newValue!.value)
                                 setNewStudents(newValue!.value)
                                 dispatch(newGroupId(newValue!))
                             }} />
                             {
-                                navidate.pathname == "/avn13/" &&
+                                (navidate.pathname == "/avn13" || navidate.pathname == "/avn13/") &&
                                 <>
-                                    <UXSelect dsbl={!!selectForm.group.value} value={selectForm.semester} options={ semesters } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                                    <UXSelect label="Семестр" dsbl={!!selectForm.group.value} value={selectForm.semester} options={ semesters } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                         changeSelectForm("semester", newValue!)
                                     }} />
-                                    <UXSelect dsbl={!!selectForm.semester.value} value={selectForm.discipline} options={ disciplines } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                                    <UXSelect label="Дисциплина" dsbl={!!selectForm.semester.value} value={selectForm.discipline} options={ disciplines } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                         changeSelectForm("discipline", newValue!)
                                     }} />
-                                    <UXSelect dsbl={!!selectForm.discipline.value} value={selectForm.formControl} options={ formControls } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                                    <UXSelect label="Форма контроля" dsbl={!!selectForm.discipline.value} value={selectForm.formControl} options={ formControls } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                         changeSelectForm("formControl", newValue!)
                                     }} />
-                                    <UXSelect dsbl={!!selectForm.formControl.value} value={selectForm.estimate} options={ estimates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                                    <UXSelect label="Правило оценок" dsbl={!!selectForm.formControl.value} value={selectForm.estimate} options={ estimates } hundleChange={(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                         changeSelectForm("estimate", newValue!)
                                     }} />
-                                    <UXSelect dsbl={!!selectForm.estimate.value} value={selectForm.statement} options={ statements } hundleChange={async(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
+                                    <UXSelect label="Форма ведомости" dsbl={!!selectForm.estimate.value} value={selectForm.statement} options={ statements } hundleChange={async(newValue: SingleValue<IUniversalSelectType>, actionMeta: ActionMeta<IUniversalSelectType> ) => {
                                         await dispatch(setLoading(true))
                                         await changeSelectForm("statement", newValue!)
                                         await dispatch(setLoading(false))
@@ -89,35 +85,36 @@ function Selects() {
                                     {
                                         !!selectForm.statement.value  && selectForm.statement.canaccessfest == 1 && 
                                         <>
-                                        <button className={classes.add_btn}  onClick={() => {
-                                            setModal(true)
-                                        }}>Добавить</button>
-                                        <div className={classes.date_all}>
-                                            <label htmlFor="" className={classes.date_label}>
-                                                Изменить дату сдачи для всех
-                                            </label>
-                                            <div className={classes.date_chane}>
-                                                <DatePicker dateFormat={"dd-MM-yyyy"} selected={newDate} onChange={ async (date:Date) => {
-                                                    const newDate = dayjs(date).format('YYYY-MM-D')
-                                                    setNewDate(new Date(newDate))
-                                                }} />
-                                                <button className={classes.add_btn}  onClick={async () => {
-                                                    const res = await queryServer<{result:boolean}>(`http://localhost:3113/avn13/api/AVN13/formask/updateDateForAllMarks`, "POST", {
-                                                        u_date : new Date(newDate),
-                                                        id_group: selectForm.group.value,
-                                                        id_semester: selectForm.semester.value,
-                                                        id_discipline: selectForm.discipline.value,
-                                                        id_examination: selectForm.formControl.value,
-                                                        id_f_est: selectForm.statement.value
-                                                    })
-                                                    if(res.result){
-                                                        await changeSelectForm("statement", selectForm.statement )
-                                                        toast.success("Изменен!")
-                                                    }
-                                                
-                                                }}>Изменить</button>
+                                            <div className={classes.btn_wrap}>
+                                                <button className={classes.add_btn} style={{width: 180, margin: 0}} onClick={() => {
+                                                    setModal(true)
+                                                }}>Добавить</button>
                                             </div>
-                                        </div>
+                                            <div className={classes.date_all}>
+                                                <label htmlFor="" className={classes.date_label}>
+                                                    Изменить дату сдачи для всех
+                                                </label>
+                                                <div className={classes.date_chane}>
+                                                    <DatePicker dateFormat={"dd-MM-yyyy"} selected={newDate} onChange={async (date:Date) => {
+                                                        const newDate = dayjs(date).format('YYYY-MM-D')
+                                                        setNewDate(new Date(newDate))
+                                                    }} />
+                                                    <button className={classes.add_btn} style={{width: 180}}  onClick={async () => {
+                                                        const res = await queryServer<{result:boolean}>(`http://localhost:3113/avn13/api/AVN13/formask/updateDateForAllMarks`, "POST", {
+                                                            u_date : new Date(newDate),
+                                                            id_group: selectForm.group.value,
+                                                            id_semester: selectForm.semester.value,
+                                                            id_discipline: selectForm.discipline.value,
+                                                            id_examination: selectForm.formControl.value,
+                                                            id_f_est: selectForm.statement.value
+                                                        })
+                                                        if(res.result){
+                                                            await changeSelectForm("statement", selectForm.statement )
+                                                            toast.success("Изменен!")
+                                                        }
+                                                    }}>Изменить</button>
+                                                </div>
+                                            </div>
                                         </>
                                     }
 

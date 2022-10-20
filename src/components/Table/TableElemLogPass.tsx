@@ -32,9 +32,11 @@ function TableElemLogPass( {
     }
     return ( 
         <>
-            <ModalLoginStud name={stud.s_fio} login={stud.login} show={modal} actionFunc={delMark} close={()=>{
-                setModal(false)
-            }}/>
+            {
+                modal ? <ModalLoginStud name={stud.s_fio} login={stud.login} show={modal} actionFunc={delMark} close={()=>{
+                    setModal(false)
+                }}/>: ""
+            }
              <div className={classNames(classes.table_row)}>
                 <div className={classNames(classes.table_item, classes.table_item_num)}>
                     {

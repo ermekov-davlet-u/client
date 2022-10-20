@@ -1,5 +1,5 @@
 import Select , { ActionMeta, SingleValue } from "react-select";
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { IUniversalSelectType } from './../../store/models/directory';
 import "./Select.scss"
 
@@ -20,7 +20,7 @@ function UXSelect({
         dsbl,
         label
     }:SelectPropType) {
-
+    const selectElem = useRef<any>()
     const styles = {
         option: (provided:any, state: any) => ({
             ...provided,
@@ -53,7 +53,10 @@ function UXSelect({
     return ( 
         <div className="select_wrap">
             {label && <label className="label" htmlFor="">{ label }</label>}
-            <Select placeholder={"Не выбрано"} isDisabled={!dsbl} className="react-select" classNamePrefix="filter"
+            <Select ref={selectElem} onBlur={() => {
+                console.log("test");
+                
+            }} placeholder={"Не выбрано"} isDisabled={!dsbl} className="react-select" classNamePrefix="filter"
                 value={value} onChange={hundleChange} options={options} styles={styles} />
         </div>
      );

@@ -21,7 +21,7 @@ i18n
         },
         ns: ["cm", "st"],
         backend: {
-            loadPath: `/Locales/{{lng}}/{{ns}}.json`,
+            loadPath: `/avn13/public/Locales/{{lng}}/{{ns}}.json`,
           },
     })
 

@@ -129,13 +129,15 @@ function TableElem( {
                 value: aw[item.pole_mark_mag]
             }
         })
-        let ad = item.formula
-        for (let i = 0; i < v.length - 1; i++) {
-            if (v[i]) {
-                ad = ad.replace(v[i].name , v[i].value)
+        let ad = item?.formula
+        if(ad){
+            for (let i = 0; i < v.length - 1; i++) {
+                if (v[i]) {
+                    ad = ad.replace(v[i].name , v[i].value)
+                }
             }
+            setTotalBall(eval(ad));
         }
-        setTotalBall(eval(ad));
     }, [markForm])
 
     
@@ -180,7 +182,7 @@ function TableElem( {
                 </div>
                 {
                     estConfig.map((item: IEstCinfig, i) => {
-                        if(i == estConfig.length - 1) {
+                        if(i == estConfig.length - 1 || item.info_or_value == 0 && item?.formula) {
                             const aw: any = markForm
                             const v: any[] = estConfig.map((item) => {
                                 return {
@@ -188,7 +190,7 @@ function TableElem( {
                                     value: aw[item.pole_mark_mag]
                                 }
                             })
-                            let ad = item.formula
+                            let ad = item?.formula
                             for (let i = 0; i < v.length - 1; i++) {
                                 if (v[i]) {
                                     ad = ad.replace(v[i].name , v[i].value)
@@ -219,8 +221,6 @@ function TableElem( {
                                 const newEstimate = await directory.grades.find( item => {
                                     return item.beg_bal < totalBall && item.end_bal > totalBall 
                                 } )
-                                console.log(newEstimate);
-                                
                                 const res = await queryServer<{result:boolean}>(
 `http://localhost:3113/avn13/api/AVN13/formask/updateMarks?mmkey=${mark.id_mark_mag}_${item.pole_mark_mag}&newval=${e.target.value}&beg_val=${oldBallRef.current}&id_estimation=${newEstimate?.id_estimation}&beg_ball=${mark.dop2}&end_ball=${mark.ball}`)
                                 if(res.result){

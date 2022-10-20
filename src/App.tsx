@@ -8,9 +8,6 @@ import MainWrap from './page/index';
 
 
 function App() {
-
-  
-
   return (
     <Provider store={store}>
       <div className="App">

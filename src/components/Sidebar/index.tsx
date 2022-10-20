@@ -18,7 +18,7 @@ function Sidebar() {
                     color: isActive ? "black" : "",
                     borderBottom: isActive ? "2px solid black" : "",
                   };
-                }} className={classes.menu_item} to="/avn13/">Список оценок</NavLink>
+                }} className={classes.menu_item} to="/avn13">Список оценок</NavLink>
               <NavLink style={({ isActive }) => {
                 return {
                   display: "block",
